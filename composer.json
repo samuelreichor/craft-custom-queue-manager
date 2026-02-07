@@ -3,6 +3,7 @@
   "description": "Manage custom queues in the control panel",
   "type": "craft-plugin",
   "license": "mit",
+  "version": "1.0.0",
   "support": {
     "email": "samuelreichor@gmail.com",
     "issues": "https://github.com/samuelreichor/craft-custom-queue-manager/issues?state=open",
