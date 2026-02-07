@@ -1,0 +1,183 @@
+<div id="queue-monitor" class="hidden">
+    {# Queue Selector #}
+    <div class="flex flex-nowrap" style="margin-bottom: 24px; align-items: center; gap: 12px;">
+        <span class="light">{{ 'Queue'|t('queue-manager') }}:</span>
+        <div class="select">
+            <select id="queue-select" v-model="selectedQueueId" @change="onQueueChange">
+                <option v-if="!hasSingleQueue" value="overview">{{ 'Overview (All Queues)'|t('queue-manager') }}</option>
+                <option v-for="(queue, id) in queues" :key="id" :value="id">[[ queue.label ]]</option>
+            </select>
+        </div>
+        <div v-if="loading" class="spinner"></div>
+    </div>
+
+    {# Overview Mode - Shows all queues #}
+    <div v-if="selectedQueueId === 'overview' && !activeJob">
+        <div v-for="(queue, queueId) in queues" :key="queueId" class="pane" style="margin-bottom: 24px; padding: 16px;">
+            <div class="flex" style="align-items: center; margin-bottom: 12px;">
+                <h3 style="margin: 0;">
+                    [[ queue.label ]]
+                    <span class="light" style="font-weight: normal;">([[ getQueueStats(queueId).total || 0 ]])</span>
+                    <span v-if="getQueueStats(queueId).failed > 0" class="failed-count">
+                        [[ getQueueStats(queueId).failed ]] {{ 'failed'|t('queue-manager') }}
+                    </span>
+                </h3>
+                <span class="flex-grow"></span>
+                <a v-if="getQueueJobs(queueId).length > 0" :href="getQueueUrl(queueId)" class="go small">{{ 'View all'|t('queue-manager') }}</a>
+            </div>
+
+            <template v-if="getQueueJobs(queueId).length > 0">
+                <table class="data fullwidth">
+                    <thead>
+                        <tr>
+                            <th scope="col">{{ 'Job'|t('queue-manager') }}</th>
+                            <th scope="col" style="width: 120px;">{{ 'Status'|t('queue-manager') }}</th>
+                            <th scope="col" style="width: 120px;">{{ 'Progress'|t('queue-manager') }}</th>
+                            <th scope="col" style="width: 80px;"></th>
+                            <th scope="col" class="thin"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="job in getQueueJobs(queueId).slice(0, 5)" :key="job.id">
+                            <td><a :href="getJobUrl(queueId, job.id)">[[ job.description ]]</a></td>
+                            <td :class="jobStatusClass(job.status)" class="nowrap">
+                                <span :class="jobStatusIconClass(job.status)"></span>
+                                [[ jobStatusLabel(job.status) ]]
+                            </td>
+                            <td>
+                                <template v-if="job.status === 'reserved'">[[ job.progress ]]%</template>
+                            </td>
+                            <td>
+                                <button v-if="job.status === 'failed'" type="button" class="btn small" data-icon="refresh" @click.stop="retryJobInQueue(queueId, job)">{{ 'Retry'|t('queue-manager') }}</button>
+                            </td>
+                            <td>
+                                <a class="delete icon" :title="'{{ 'Release'|t('queue-manager') }}'" role="button" @click.stop="releaseJobInQueue(queueId, job)"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
+            <p v-else class="light zilch-small">{{ 'No jobs'|t('queue-manager') }}</p>
+        </div>
+    </div>
+
+    {# Single Queue View #}
+    <div v-else-if="selectedQueueId !== 'overview' && !activeJob">
+        <template v-if="jobs.length">
+            <div class="tablepane" style="margin-top: 14px;">
+                <table class="data fullwidth">
+                    <thead>
+                        <tr>
+                            <th scope="col">{{ 'Job'|t('queue-manager') }}</th>
+                            <th scope="col" style="width: 100px;">{{ 'Status'|t('queue-manager') }}</th>
+                            <th scope="col" style="width: 80px;">{{ 'Progress'|t('queue-manager') }}</th>
+                            <th scope="col" style="width: 70px;"></th>
+                            <th scope="col" class="thin"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="job in jobs" :key="job.id">
+                            <td><a :href="getJobUrl(selectedQueueId, job.id)">[[ job.description ]]</a></td>
+                            <td :class="jobStatusClass(job.status)" class="nowrap">
+                                <span :class="jobStatusIconClass(job.status)"></span>
+                                [[ jobStatusLabel(job.status) ]]
+                            </td>
+                            <td>
+                                <template v-if="job.status === 'reserved'">[[ job.progress ]]%</template>
+                            </td>
+                            <td>
+                                <button v-if="isRetryable(job)" type="button" class="btn small" data-icon="refresh" @click="retryJob(job)" :disabled="actionLoading">{{ 'Retry'|t('queue-manager') }}</button>
+                            </td>
+                            <td>
+                                <a class="delete icon" :title="'{{ 'Release'|t('queue-manager') }}'" role="button" @click="releaseJob(job)"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+        <div v-else class="zilch">
+            <p>{{ 'No jobs in this queue.'|t('queue-manager') }}</p>
+        </div>
+    </div>
+
+    {# Active Job Detail View #}
+    <div v-if="activeJob" class="readable">
+        <h2>[[ activeJob.description ]]</h2>
+
+        <table class="data fullwidth fixed-layout">
+            <tbody>
+                <tr>
+                    <th class="light">{{ 'ID'|t('queue-manager') }}</th>
+                    <td>[[ activeJob.id ]]</td>
+                </tr>
+                <tr v-if="activeJob.class">
+                    <th class="light">{{ 'Class'|t('queue-manager') }}</th>
+                    <td><code>[[ activeJob.class ]]</code></td>
+                </tr>
+                <tr>
+                    <th class="light">{{ 'Status'|t('queue-manager') }}</th>
+                    <td :class="jobStatusClass(activeJob.status)">
+                        <span :class="jobStatusIconClass(activeJob.status)"></span>
+                        [[ jobStatusLabel(activeJob.status) ]]
+                    </td>
+                </tr>
+                <tr v-if="activeJob.error">
+                    <th class="light">{{ 'Error'|t('queue-manager') }}</th>
+                    <td class="error">[[ activeJob.error ]]</td>
+                </tr>
+                <tr>
+                    <th class="light">{{ 'Progress'|t('queue-manager') }}</th>
+                    <td>
+                        [[ activeJob.progress ]]%
+                        <span v-if="activeJob.progressLabel" class="light">([[ activeJob.progressLabel ]])</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="light">{{ 'Time to reserve'|t('queue-manager') }}</th>
+                    <td>[[ activeJob.ttr ]] {{ 'seconds'|t('queue-manager') }}</td>
+                </tr>
+                <tr>
+                    <th class="light">{{ 'Priority'|t('queue-manager') }}</th>
+                    <td>[[ activeJob.priority ]]</td>
+                </tr>
+                <tr>
+                    <th class="light">{{ 'Pushed at'|t('queue-manager') }}</th>
+                    <td>[[ activeJob.timePushed ]]</td>
+                </tr>
+                <tr v-if="activeJob.timeUpdated">
+                    <th class="light">{{ 'Updated at'|t('queue-manager') }}</th>
+                    <td>[[ activeJob.timeUpdated ]]</td>
+                </tr>
+                <tr v-if="activeJob.dateFailed">
+                    <th class="light">{{ 'Failed at'|t('queue-manager') }}</th>
+                    <td>[[ activeJob.dateFailed ]]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <template v-if="activeJob.job">
+            <hr>
+            <h4>{{ 'Job Data'|t('queue-manager') }}</h4>
+            <pre class="pane"><code>[[ activeJob.job ]]</code></pre>
+        </template>
+    </div>
+</div>
+
+<script>
+    window.QueueMonitorConfig = {
+        queues: {{ queues|json_encode|raw }},
+        csrfTokenName: '{{ craft.app.config.general.csrfTokenName }}',
+        csrfTokenValue: '{{ craft.app.request.csrfToken }}',
+        refreshInterval: {{ settings.refreshInterval }},
+        jobsPerPage: {{ settings.jobsPerPage }},
+        endpoints: {
+            getJobInfo: '{{ actionUrl('queue-manager/queue-monitor/get-job-info') }}',
+            getJobDetails: '{{ actionUrl('queue-manager/queue-monitor/get-job-details') }}',
+            retry: '{{ actionUrl('queue-manager/queue-monitor/retry') }}',
+            release: '{{ actionUrl('queue-manager/queue-monitor/release') }}',
+            retryAll: '{{ actionUrl('queue-manager/queue-monitor/retry-all') }}',
+            releaseAll: '{{ actionUrl('queue-manager/queue-monitor/release-all') }}',
+        },
+    };
+</script>

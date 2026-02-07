@@ -1,0 +1,62 @@
+{# @var plugin \samuelreichor\queueManager\QueueManager #}
+{# @var settings \samuelreichor\queueManager\models\Settings #}
+
+{% import '_includes/forms.twig' as forms %}
+
+<h2>{{ 'General'|t('queue-manager') }}</h2>
+
+{{ forms.selectField({
+    label: 'Auto Refresh Interval'|t('queue-manager'),
+    instructions: 'How often the queue monitor should refresh automatically.'|t('queue-manager'),
+    id: 'refreshInterval',
+    name: 'refreshInterval',
+    value: settings.refreshInterval,
+    options: [
+        { label: '1 seconds'|t('queue-manager'), value: 1000 },
+        { label: '2 seconds (default)'|t('queue-manager'), value: 2000 },
+        { label: '5 seconds'|t('queue-manager'), value: 5000 },
+        { label: '10 seconds'|t('queue-manager'), value: 10000 },
+    ],
+    errors: settings.getErrors('refreshInterval'),
+}) }}
+
+{{ forms.selectField({
+    label: 'Jobs per Page'|t('queue-manager'),
+    instructions: 'Maximum number of jobs to display per queue.'|t('queue-manager'),
+    id: 'jobsPerPage',
+    name: 'jobsPerPage',
+    value: settings.jobsPerPage,
+    options: [
+        { label: '25', value: 25 },
+        { label: '50 (default)', value: 50 },
+        { label: '100', value: 100 },
+    ],
+    errors: settings.getErrors('jobsPerPage'),
+}) }}
+
+<hr>
+
+<h2>{{ 'Email Notifications'|t('queue-manager') }}</h2>
+
+{{ forms.lightswitchField({
+    label: 'Enable Email Notifications'|t('queue-manager'),
+    instructions: 'Send an email when a queue job fails permanently.'|t('queue-manager'),
+    id: 'enableEmailNotifications',
+    name: 'enableEmailNotifications',
+    on: settings.enableEmailNotifications,
+    errors: settings.getErrors('enableEmailNotifications'),
+    toggle: 'email-notification-fields',
+}) }}
+
+<div id="email-notification-fields" {% if not settings.enableEmailNotifications %}class="hidden"{% endif %}>
+    {{ forms.textField({
+        label: 'Notification Email'|t('queue-manager'),
+        instructions: 'The email address to send failure notifications to.'|t('queue-manager'),
+        id: 'notificationEmail',
+        name: 'notificationEmail',
+        type: 'email',
+        value: settings.notificationEmail,
+        errors: settings.getErrors('notificationEmail'),
+    }) }}
+</div>
+

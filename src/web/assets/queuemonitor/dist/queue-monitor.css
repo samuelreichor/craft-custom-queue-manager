@@ -1,0 +1,39 @@
+/* Queue Monitor Styles */
+
+#queue-monitor a {
+    cursor: pointer;
+}
+
+/* Failed count text in queue headers */
+#queue-monitor .failed-count {
+    color: var(--red-600);
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+/* Status column - prevent wrapping */
+#queue-monitor .job-status-col {
+    width: 100px;
+}
+
+#queue-monitor .nowrap {
+    white-space: nowrap;
+}
+
+/* Small empty state */
+.zilch-small {
+    margin: 8px 0 0;
+    font-style: italic;
+}
+
+/* Error pane in job details */
+.pane.error {
+    background-color: var(--red-050);
+    border-color: var(--red-200);
+}
+
+.pane.error pre {
+    color: var(--red-600);
+    font-family: var(--font-family-mono);
+    font-size: 13px;
+}
