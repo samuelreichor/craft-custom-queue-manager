@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Craft CMS 5 plugin ("Queue Manager") that provides a Control Panel utility for monitoring and managing custom queue jobs. PHP 8.2+, namespace `samuelreichor\queueManager`.
+Craft CMS 5 plugin ("Custom Queue Manager") that provides a Control Panel utility for monitoring and managing custom queue jobs. PHP 8.2+, namespace `samuelreichor\customQueueManager`.
 
 ## Commands
 
@@ -16,15 +16,15 @@ composer phpstan        # Run static analysis (level 4)
 
 Seeding test data (run from the Craft project root, not the plugin directory):
 ```bash
-php craft queue-manager/seed             # Seed all queues
-php craft queue-manager/seed/failing     # Seed failing jobs
-php craft queue-manager/seed/mixed       # Mixed jobs across queues
-php craft queue-manager/seed --count=10  # Specify job count
+php craft custom-queue-manager/seed             # Seed all queues
+php craft custom-queue-manager/seed/failing     # Seed failing jobs
+php craft custom-queue-manager/seed/mixed       # Mixed jobs across queues
+php craft custom-queue-manager/seed --count=10  # Specify job count
 ```
 
 ## Architecture
 
-**Plugin entry point:** `src/QueueManager.php` — registers the `QueueDiscoveryService` and `QueueMonitorUtility` via Craft's event system.
+**Plugin entry point:** `src/CustomQueueManager.php` — registers the `QueueDiscoveryService` and `QueueMonitorUtility` via Craft's event system.
 
 **Key layers:**
 - **Controller** (`controllers/QueueMonitorController.php`) — REST API for job info, retry, release, and bulk actions. All endpoints require CP request + `utility:queue-monitor` permission. Returns JSON.

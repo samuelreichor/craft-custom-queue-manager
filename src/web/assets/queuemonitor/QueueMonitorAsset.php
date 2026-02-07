@@ -1,6 +1,6 @@
 <?php
 
-namespace samuelreichor\queueManager\web\assets\queuemonitor;
+namespace samuelreichor\customQueueManager\web\assets\queuemonitor;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;

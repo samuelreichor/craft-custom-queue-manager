@@ -1,6 +1,6 @@
 <?php
 
-namespace samuelreichor\queueManager\services;
+namespace samuelreichor\customQueueManager\services;
 
 use Craft;
 use craft\queue\Queue;

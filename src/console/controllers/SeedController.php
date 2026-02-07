@@ -1,15 +1,15 @@
 <?php
 
-namespace samuelreichor\queueManager\console\controllers;
+namespace samuelreichor\customQueueManager\console\controllers;
 
 use Craft;
 use craft\console\Controller;
 use craft\queue\Queue;
-use samuelreichor\queueManager\jobs\EmailJob;
-use samuelreichor\queueManager\jobs\FailingJob;
-use samuelreichor\queueManager\jobs\ImportJob;
-use samuelreichor\queueManager\jobs\LongRunningJob;
-use samuelreichor\queueManager\jobs\SimpleJob;
+use samuelreichor\customQueueManager\jobs\EmailJob;
+use samuelreichor\customQueueManager\jobs\FailingJob;
+use samuelreichor\customQueueManager\jobs\ImportJob;
+use samuelreichor\customQueueManager\jobs\LongRunningJob;
+use samuelreichor\customQueueManager\jobs\SimpleJob;
 use yii\console\ExitCode;
 
 class SeedController extends Controller

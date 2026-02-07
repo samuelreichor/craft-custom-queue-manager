@@ -1,28 +1,28 @@
-{# @var plugin \samuelreichor\queueManager\QueueManager #}
-{# @var settings \samuelreichor\queueManager\models\Settings #}
+{# @var plugin \samuelreichor\customQueueManager\CustomQueueManager #}
+{# @var settings \samuelreichor\customQueueManager\models\Settings #}
 
 {% import '_includes/forms.twig' as forms %}
 
-<h2>{{ 'General'|t('queue-manager') }}</h2>
+<h2>{{ 'General'|t('custom-queue-manager') }}</h2>
 
 {{ forms.selectField({
-    label: 'Auto Refresh Interval'|t('queue-manager'),
-    instructions: 'How often the queue monitor should refresh automatically.'|t('queue-manager'),
+    label: 'Auto Refresh Interval'|t('custom-queue-manager'),
+    instructions: 'How often the queue monitor should refresh automatically.'|t('custom-queue-manager'),
     id: 'refreshInterval',
     name: 'refreshInterval',
     value: settings.refreshInterval,
     options: [
-        { label: '1 seconds'|t('queue-manager'), value: 1000 },
-        { label: '2 seconds (default)'|t('queue-manager'), value: 2000 },
-        { label: '5 seconds'|t('queue-manager'), value: 5000 },
-        { label: '10 seconds'|t('queue-manager'), value: 10000 },
+        { label: '1 seconds'|t('custom-queue-manager'), value: 1000 },
+        { label: '2 seconds (default)'|t('custom-queue-manager'), value: 2000 },
+        { label: '5 seconds'|t('custom-queue-manager'), value: 5000 },
+        { label: '10 seconds'|t('custom-queue-manager'), value: 10000 },
     ],
     errors: settings.getErrors('refreshInterval'),
 }) }}
 
 {{ forms.selectField({
-    label: 'Jobs per Page'|t('queue-manager'),
-    instructions: 'Maximum number of jobs to display per queue.'|t('queue-manager'),
+    label: 'Jobs per Page'|t('custom-queue-manager'),
+    instructions: 'Maximum number of jobs to display per queue.'|t('custom-queue-manager'),
     id: 'jobsPerPage',
     name: 'jobsPerPage',
     value: settings.jobsPerPage,
@@ -36,11 +36,11 @@
 
 <hr>
 
-<h2>{{ 'Email Notifications'|t('queue-manager') }}</h2>
+<h2>{{ 'Email Notifications'|t('custom-queue-manager') }}</h2>
 
 {{ forms.lightswitchField({
-    label: 'Enable Email Notifications'|t('queue-manager'),
-    instructions: 'Send an email when a queue job fails permanently.'|t('queue-manager'),
+    label: 'Enable Email Notifications'|t('custom-queue-manager'),
+    instructions: 'Send an email when a queue job fails permanently.'|t('custom-queue-manager'),
     id: 'enableEmailNotifications',
     name: 'enableEmailNotifications',
     on: settings.enableEmailNotifications,
@@ -50,8 +50,8 @@
 
 <div id="email-notification-fields" {% if not settings.enableEmailNotifications %}class="hidden"{% endif %}>
     {{ forms.textField({
-        label: 'Notification Email'|t('queue-manager'),
-        instructions: 'The email address to send failure notifications to.'|t('queue-manager'),
+        label: 'Notification Email'|t('custom-queue-manager'),
+        instructions: 'The email address to send failure notifications to.'|t('custom-queue-manager'),
         id: 'notificationEmail',
         name: 'notificationEmail',
         type: 'email',

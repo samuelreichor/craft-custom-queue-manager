@@ -1,6 +1,6 @@
 <?php
 
-namespace samuelreichor\queueManager\jobs;
+namespace samuelreichor\customQueueManager\jobs;
 
 use craft\queue\BaseJob;
 

@@ -1,21 +1,21 @@
 <template v-if="activeJob">
-    <a :href="getBackUrl()" class="btn" data-icon="larr" title="{{ 'Back to the queue'|t('queue-manager') }}">{{ 'Back'|t('queue-manager') }}</a>
+    <a :href="getBackUrl()" class="btn" data-icon="larr" title="{{ 'Back to the queue'|t('custom-queue-manager') }}">{{ 'Back'|t('custom-queue-manager') }}</a>
     <div class="flex-grow"></div>
     <div v-if="loading" class="spinner"></div>
-    <button type="button" v-if="isRetryable(activeJob)" class="btn" data-icon="refresh" @click="retryActiveJob">{{ 'Retry'|t('queue-manager') }}</button>
-    <button type="button" class="btn" data-icon="remove" @click="releaseActiveJob">{{ 'Release'|t('queue-manager') }}</button>
+    <button type="button" v-if="isRetryable(activeJob)" class="btn" data-icon="refresh" @click="retryActiveJob">{{ 'Retry'|t('custom-queue-manager') }}</button>
+    <button type="button" class="btn" data-icon="remove" @click="releaseActiveJob">{{ 'Release'|t('custom-queue-manager') }}</button>
 </template>
 <template v-else-if="selectedQueueId !== 'overview' && jobs.length">
     <div class="flex-grow"></div>
     <div v-if="loading" class="spinner"></div>
-    <button type="button" class="btn" data-icon="refresh" @click="retryAll">{{ 'Retry all failed'|t('queue-manager') }}</button>
-    <button type="button" class="btn" data-icon="remove" @click="releaseAll">{{ 'Release all'|t('queue-manager') }}</button>
+    <button type="button" class="btn" data-icon="refresh" @click="retryAll">{{ 'Retry all failed'|t('custom-queue-manager') }}</button>
+    <button type="button" class="btn" data-icon="remove" @click="releaseAll">{{ 'Release all'|t('custom-queue-manager') }}</button>
 </template>
 <template v-else-if="hasAnyJobs">
     <div class="flex-grow"></div>
     <div v-if="loading" class="spinner"></div>
-    <button type="button" class="btn" data-icon="refresh" @click="retryAllQueues">{{ 'Retry all failed'|t('queue-manager') }}</button>
-    <button type="button" class="btn" data-icon="remove" @click="releaseAllQueues">{{ 'Release all'|t('queue-manager') }}</button>
+    <button type="button" class="btn" data-icon="refresh" @click="retryAllQueues">{{ 'Retry all failed'|t('custom-queue-manager') }}</button>
+    <button type="button" class="btn" data-icon="remove" @click="releaseAllQueues">{{ 'Release all'|t('custom-queue-manager') }}</button>
 </template>
 <template v-else>
     <div class="flex-grow"></div>

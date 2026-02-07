@@ -1,26 +1,26 @@
 <div align="center">
-	<a href="https://packagist.org/packages/samuelreichor/craft-queue-manager" align="center">
-      <img src="https://online-images-sr.netlify.app/assets/craft-queue-manager.png" width="100" alt="Craft Insights">
+	<a href="https://packagist.org/packages/samuelreichor/craft-custom-queue-manager" align="center">
+      <img src="https://online-images-sr.netlify.app/assets/craft-custom-queue-manager.png" width="100" alt="Custom Queue Manager">
 	</a>
   <br>
-	<h1 align="center">(Custom) Queue Manager for Craft CMS</h1>
+	<h1 align="center">Custom Queue Manager for Craft CMS</h1>
   <p align="center">
     Adds a utility to manage custom queues in the control panel and improves error handling for failing queue jobs.
     <br/>
 </div>
 
 <p align="center">
-  <a href="https://packagist.org/packages/samuelreichor/craft-queue-manager">
-    <img src="https://img.shields.io/packagist/v/samuelreichor/craft-queue-manager?label=version&color=blue">
+  <a href="https://packagist.org/packages/samuelreichor/craft-custom-queue-manager">
+    <img src="https://img.shields.io/packagist/v/samuelreichor/craft-custom-queue-manager?label=version&color=blue">
   </a>
-  <a href="https://packagist.org/packages/samuelreichor/craft-queue-manager">
-    <img src="https://img.shields.io/packagist/dt/samuelreichor/craft-queue-manager?color=blue">
+  <a href="https://packagist.org/packages/samuelreichor/craft-custom-queue-manager">
+    <img src="https://img.shields.io/packagist/dt/samuelreichor/craft-custom-queue-manager?color=blue">
   </a>
-  <a href="https://packagist.org/packages/samuelreichor/craft-queue-manager">
-    <img src="https://img.shields.io/packagist/php-v/samuelreichor/craft-queue-manager?color=blue">
+  <a href="https://packagist.org/packages/samuelreichor/craft-custom-queue-manager">
+    <img src="https://img.shields.io/packagist/php-v/samuelreichor/craft-custom-queue-manager?color=blue">
   </a>
-  <a href="https://packagist.org/packages/samuelreichor/craft-queue-manager">
-    <img src="https://img.shields.io/packagist/l/samuelreichor/craft-queue-manager?color=blue">
+  <a href="https://packagist.org/packages/samuelreichor/craft-custom-queue-manager">
+    <img src="https://img.shields.io/packagist/l/samuelreichor/craft-custom-queue-manager?color=blue">
   </a>
 </p>
 
@@ -41,7 +41,7 @@ This plugin requires Craft CMS 5.0.0 or later, and PHP 8.2 or later.
 
 ## Documentation
 
-Visit the [Queue Manager documentation](https://samuelreichor.at/libraries/craft-queue-manager) for all documentation, guides and developer resources.
+Visit the [Custom Queue Manager documentation](https://samuelreichor.at/libraries/craft-custom-queue-manager) for all documentation, guides and developer resources.
 
 ## Support
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace samuelreichor\queueManager\controllers;
+namespace samuelreichor\customQueueManager\controllers;
 
 use Craft;
 use craft\db\Query;
 use craft\queue\Queue;
 use craft\web\Controller;
-use samuelreichor\queueManager\QueueManager;
+use samuelreichor\customQueueManager\CustomQueueManager;
 use yii\web\Response;
 
 class QueueMonitorController extends Controller
@@ -31,12 +31,12 @@ class QueueMonitorController extends Controller
         $this->requireAcceptsJson();
 
         $queueId = $this->request->getRequiredQueryParam('queueId');
-        $settings = QueueManager::getInstance()->getSettings();
+        $settings = CustomQueueManager::getInstance()->getSettings();
         $limit = $this->request->getQueryParam('limit', $settings->jobsPerPage);
 
         $queue = $this->getQueueById($queueId);
         if (!$queue) {
-            return $this->asFailure(Craft::t('queue-manager', 'Queue not found.'));
+            return $this->asFailure(Craft::t('custom-queue-manager', 'Queue not found.'));
         }
 
         $tableName = $queue->tableName;
@@ -76,7 +76,7 @@ class QueueMonitorController extends Controller
 
         $queue = $this->getQueueById($queueId);
         if (!$queue) {
-            return $this->asFailure(Craft::t('queue-manager', 'Queue not found.'));
+            return $this->asFailure(Craft::t('custom-queue-manager', 'Queue not found.'));
         }
 
         $channel = $this->getQueueChannel($queue, $queueId);
@@ -87,7 +87,7 @@ class QueueMonitorController extends Controller
             ->one();
 
         if (!$job) {
-            return $this->asFailure(Craft::t('queue-manager', 'Job not found.'));
+            return $this->asFailure(Craft::t('custom-queue-manager', 'Job not found.'));
         }
 
         return $this->asJson([
@@ -108,7 +108,7 @@ class QueueMonitorController extends Controller
 
         $queue = $this->getQueueById($queueId);
         if (!$queue) {
-            return $this->asFailure(Craft::t('queue-manager', 'Queue not found.'));
+            return $this->asFailure(Craft::t('custom-queue-manager', 'Queue not found.'));
         }
 
         $channel = $this->getQueueChannel($queue, $queueId);
@@ -120,12 +120,12 @@ class QueueMonitorController extends Controller
             ->one();
 
         if (!$job) {
-            return $this->asFailure(Craft::t('queue-manager', 'Job not found.'));
+            return $this->asFailure(Craft::t('custom-queue-manager', 'Job not found.'));
         }
 
         $queue->retry((string)$jobId);
 
-        return $this->asSuccess(Craft::t('queue-manager', 'Job queued for retry.'));
+        return $this->asSuccess(Craft::t('custom-queue-manager', 'Job queued for retry.'));
     }
 
     /**
@@ -141,7 +141,7 @@ class QueueMonitorController extends Controller
 
         $queue = $this->getQueueById($queueId);
         if (!$queue) {
-            return $this->asFailure(Craft::t('queue-manager', 'Queue not found.'));
+            return $this->asFailure(Craft::t('custom-queue-manager', 'Queue not found.'));
         }
 
         $channel = $this->getQueueChannel($queue, $queueId);
@@ -153,12 +153,12 @@ class QueueMonitorController extends Controller
             ->one();
 
         if (!$job) {
-            return $this->asFailure(Craft::t('queue-manager', 'Job not found.'));
+            return $this->asFailure(Craft::t('custom-queue-manager', 'Job not found.'));
         }
 
         $queue->release((string)$jobId);
 
-        return $this->asSuccess(Craft::t('queue-manager', 'Job released.'));
+        return $this->asSuccess(Craft::t('custom-queue-manager', 'Job released.'));
     }
 
     /**
@@ -173,7 +173,7 @@ class QueueMonitorController extends Controller
 
         $queue = $this->getQueueById($queueId);
         if (!$queue) {
-            return $this->asFailure(Craft::t('queue-manager', 'Queue not found.'));
+            return $this->asFailure(Craft::t('custom-queue-manager', 'Queue not found.'));
         }
 
         $channel = $this->getQueueChannel($queue, $queueId);
@@ -189,7 +189,7 @@ class QueueMonitorController extends Controller
             $queue->retry((string)$jobId);
         }
 
-        return $this->asSuccess(Craft::t('queue-manager', 'All failed jobs queued for retry.'));
+        return $this->asSuccess(Craft::t('custom-queue-manager', 'All failed jobs queued for retry.'));
     }
 
     /**
@@ -204,7 +204,7 @@ class QueueMonitorController extends Controller
 
         $queue = $this->getQueueById($queueId);
         if (!$queue) {
-            return $this->asFailure(Craft::t('queue-manager', 'Queue not found.'));
+            return $this->asFailure(Craft::t('custom-queue-manager', 'Queue not found.'));
         }
 
         $channel = $this->getQueueChannel($queue, $queueId);
@@ -220,7 +220,7 @@ class QueueMonitorController extends Controller
             $queue->release((string)$jobId);
         }
 
-        return $this->asSuccess(Craft::t('queue-manager', 'All jobs released.'));
+        return $this->asSuccess(Craft::t('custom-queue-manager', 'All jobs released.'));
     }
 
     /**
@@ -228,7 +228,7 @@ class QueueMonitorController extends Controller
      */
     private function getQueueById(string $queueId): ?Queue
     {
-        return QueueManager::getInstance()->queueDiscovery->getQueue($queueId);
+        return CustomQueueManager::getInstance()->queueDiscovery->getQueue($queueId);
     }
 
     /**
@@ -332,10 +332,10 @@ class QueueMonitorController extends Controller
     private function getStatusLabel(string $status): string
     {
         return match ($status) {
-            'waiting' => Craft::t('queue-manager', 'Pending'),
-            'reserved' => Craft::t('queue-manager', 'Reserved'),
-            'failed' => Craft::t('queue-manager', 'Failed'),
-            default => Craft::t('queue-manager', 'Unknown'),
+            'waiting' => Craft::t('custom-queue-manager', 'Pending'),
+            'reserved' => Craft::t('custom-queue-manager', 'Reserved'),
+            'failed' => Craft::t('custom-queue-manager', 'Failed'),
+            default => Craft::t('custom-queue-manager', 'Unknown'),
         };
     }
 

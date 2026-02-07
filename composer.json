@@ -1,14 +1,14 @@
 {
-  "name": "samuelreichor/craft-queue-manager",
+  "name": "samuelreichor/craft-custom-queue-manager",
   "description": "Manage custom queues in the control panel",
   "type": "craft-plugin",
   "license": "mit",
   "support": {
     "email": "samuelreichor@gmail.com",
-    "issues": "https://github.com/samuelreichor/craft-queue-manager/issues?state=open",
-    "source": "https://github.com/samuelreichor/craft-queue-manager",
-    "docs": "https://github.com/samuelreichor/craft-queue-manager",
-    "rss": "https://github.com/samuelreichor/craft-queue-manager/releases.atom"
+    "issues": "https://github.com/samuelreichor/craft-custom-queue-manager/issues?state=open",
+    "source": "https://github.com/samuelreichor/craft-custom-queue-manager",
+    "docs": "https://github.com/samuelreichor/craft-custom-queue-manager",
+    "rss": "https://github.com/samuelreichor/craft-custom-queue-manager/releases.atom"
   },
   "require": {
     "php": ">=8.2",
@@ -20,15 +20,15 @@
   },
   "autoload": {
     "psr-4": {
-      "samuelreichor\\queueManager\\": "src/"
+      "samuelreichor\\customQueueManager\\": "src/"
     }
   },
   "extra": {
-    "handle": "queue-manager",
-    "name": "Queue Manager",
+    "handle": "custom-queue-manager",
+    "name": "Custom Queue Manager",
     "developer": "Samuel Reichör",
-    "documentationUrl": "https://github.com/samuelreichor/craft-queue-manager",
-    "class": "samuelreichor\\queueManager\\QueueManager"
+    "documentationUrl": "https://github.com/samuelreichor/craft-custom-queue-manager",
+    "class": "samuelreichor\\customQueueManager\\CustomQueueManager"
   },
   "scripts": {
     "check-cs": "ecs check --ansi",

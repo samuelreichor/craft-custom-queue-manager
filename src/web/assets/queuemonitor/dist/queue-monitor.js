@@ -125,7 +125,7 @@
                     Promise.all(promises)
                         .catch(function(error) {
                             console.error('Failed to load queues:', error);
-                            Craft.cp.displayError(Craft.t('queue-manager', 'An error occurred.'));
+                            Craft.cp.displayError(Craft.t('custom-queue-manager', 'An error occurred.'));
                         })
                         .finally(function() {
                             self.loading = false;
@@ -168,7 +168,7 @@
                     })
                     .catch(function(error) {
                         console.error('Failed to load jobs:', error);
-                        Craft.cp.displayError(Craft.t('queue-manager', 'An error occurred.'));
+                        Craft.cp.displayError(Craft.t('custom-queue-manager', 'An error occurred.'));
                     })
                     .finally(function() {
                         self.loading = false;
@@ -204,7 +204,7 @@
                     })
                     .catch(function(error) {
                         console.error('Failed to load job details:', error);
-                        Craft.cp.displayError(Craft.t('queue-manager', 'An error occurred.'));
+                        Craft.cp.displayError(Craft.t('custom-queue-manager', 'An error occurred.'));
                     })
                     .finally(function() {
                         self.loading = false;
@@ -223,7 +223,7 @@
                     this.performAction(config.endpoints.retry, {
                         queueId: queueId,
                         jobId: job.id,
-                    }, Craft.t('queue-manager', 'Job retried.'));
+                    }, Craft.t('custom-queue-manager', 'Job retried.'));
                 },
 
                 retryJobInQueue: function(queueId, job) {
@@ -231,7 +231,7 @@
                     this.performAction(config.endpoints.retry, {
                         queueId: queueId,
                         jobId: job.id,
-                    }, Craft.t('queue-manager', 'Job retried.'), function() {
+                    }, Craft.t('custom-queue-manager', 'Job retried.'), function() {
                         self.fetchQueueJobs(queueId);
                     });
                 },
@@ -244,7 +244,7 @@
 
                 releaseJob: function(job) {
                     var self = this;
-                    var message = Craft.t('queue-manager', 'Are you sure you want to release this job?');
+                    var message = Craft.t('custom-queue-manager', 'Are you sure you want to release this job?');
                     if (!confirm(message)) {
                         return;
                     }
@@ -252,19 +252,19 @@
                     this.performAction(config.endpoints.release, {
                         queueId: queueId,
                         jobId: job.id,
-                    }, Craft.t('queue-manager', 'Job released.'));
+                    }, Craft.t('custom-queue-manager', 'Job released.'));
                 },
 
                 releaseJobInQueue: function(queueId, job) {
                     var self = this;
-                    var message = Craft.t('queue-manager', 'Are you sure you want to release this job?');
+                    var message = Craft.t('custom-queue-manager', 'Are you sure you want to release this job?');
                     if (!confirm(message)) {
                         return;
                     }
                     this.performAction(config.endpoints.release, {
                         queueId: queueId,
                         jobId: job.id,
-                    }, Craft.t('queue-manager', 'Job released.'), function() {
+                    }, Craft.t('custom-queue-manager', 'Job released.'), function() {
                         self.fetchQueueJobs(queueId);
                     });
                 },
@@ -272,7 +272,7 @@
                 releaseActiveJob: function() {
                     var self = this;
                     if (this.activeJob) {
-                        var message = Craft.t('queue-manager', 'Are you sure you want to release this job?');
+                        var message = Craft.t('custom-queue-manager', 'Are you sure you want to release this job?');
                         if (!confirm(message)) {
                             return;
                         }
@@ -280,7 +280,7 @@
                         this.performAction(config.endpoints.release, {
                             queueId: queueId,
                             jobId: this.activeJob.id,
-                        }, Craft.t('queue-manager', 'Job released.'), function() {
+                        }, Craft.t('custom-queue-manager', 'Job released.'), function() {
                             window.location.href = self.getBackUrl();
                         });
                     }
@@ -290,18 +290,18 @@
                     var queueId = this.activeQueueId || this.selectedQueueId;
                     this.performAction(config.endpoints.retryAll, {
                         queueId: queueId,
-                    }, Craft.t('queue-manager', 'All failed jobs retried.'));
+                    }, Craft.t('custom-queue-manager', 'All failed jobs retried.'));
                 },
 
                 releaseAll: function() {
-                    var message = Craft.t('queue-manager', 'Are you sure you want to release all jobs in this queue?');
+                    var message = Craft.t('custom-queue-manager', 'Are you sure you want to release all jobs in this queue?');
                     if (!confirm(message)) {
                         return;
                     }
                     var queueId = this.activeQueueId || this.selectedQueueId;
                     this.performAction(config.endpoints.releaseAll, {
                         queueId: queueId,
-                    }, Craft.t('queue-manager', 'All jobs released.'));
+                    }, Craft.t('custom-queue-manager', 'All jobs released.'));
                 },
 
                 retryAllQueues: function() {
@@ -322,12 +322,12 @@
 
                     Promise.all(promises)
                         .then(function() {
-                            Craft.cp.displayNotice(Craft.t('queue-manager', 'All failed jobs retried.'));
+                            Craft.cp.displayNotice(Craft.t('custom-queue-manager', 'All failed jobs retried.'));
                             self.loadAllQueues();
                         })
                         .catch(function(error) {
                             console.error('Retry all queues failed:', error);
-                            Craft.cp.displayError(Craft.t('queue-manager', 'An error occurred.'));
+                            Craft.cp.displayError(Craft.t('custom-queue-manager', 'An error occurred.'));
                         })
                         .finally(function() {
                             self.actionLoading = false;
@@ -336,7 +336,7 @@
 
                 releaseAllQueues: function() {
                     var self = this;
-                    var message = Craft.t('queue-manager', 'Are you sure you want to release all jobs in all queues?');
+                    var message = Craft.t('custom-queue-manager', 'Are you sure you want to release all jobs in all queues?');
                     if (!confirm(message)) {
                         return;
                     }
@@ -356,12 +356,12 @@
 
                     Promise.all(promises)
                         .then(function() {
-                            Craft.cp.displayNotice(Craft.t('queue-manager', 'All jobs released.'));
+                            Craft.cp.displayNotice(Craft.t('custom-queue-manager', 'All jobs released.'));
                             self.loadAllQueues();
                         })
                         .catch(function(error) {
                             console.error('Release all queues failed:', error);
-                            Craft.cp.displayError(Craft.t('queue-manager', 'An error occurred.'));
+                            Craft.cp.displayError(Craft.t('custom-queue-manager', 'An error occurred.'));
                         })
                         .finally(function() {
                             self.actionLoading = false;
@@ -396,12 +396,12 @@
                                 self.loadJobs(self.selectedQueueId);
                             }
                         } else {
-                            Craft.cp.displayError(result.message || Craft.t('queue-manager', 'An error occurred.'));
+                            Craft.cp.displayError(result.message || Craft.t('custom-queue-manager', 'An error occurred.'));
                         }
                     })
                     .catch(function(error) {
                         console.error('Action failed:', error);
-                        Craft.cp.displayError(Craft.t('queue-manager', 'An error occurred.'));
+                        Craft.cp.displayError(Craft.t('custom-queue-manager', 'An error occurred.'));
                     })
                     .finally(function() {
                         self.actionLoading = false;
@@ -429,10 +429,10 @@
 
                 jobStatusLabel: function(status) {
                     switch (status) {
-                        case 'waiting': return Craft.t('queue-manager', 'Pending');
-                        case 'reserved': return Craft.t('queue-manager', 'Reserved');
-                        case 'failed': return Craft.t('queue-manager', 'Failed');
-                        case 'completed': return Craft.t('queue-manager', 'Done');
+                        case 'waiting': return Craft.t('custom-queue-manager', 'Pending');
+                        case 'reserved': return Craft.t('custom-queue-manager', 'Reserved');
+                        case 'failed': return Craft.t('custom-queue-manager', 'Failed');
+                        case 'completed': return Craft.t('custom-queue-manager', 'Done');
                         default: return status;
                     }
                 },
@@ -526,7 +526,7 @@
                             self.activeJob.status = 'completed';
                             self.activeJob.progress = 100;
                             self.stopAutoRefresh();
-                            Craft.cp.displayNotice(Craft.t('queue-manager', 'Job completed.'));
+                            Craft.cp.displayNotice(Craft.t('custom-queue-manager', 'Job completed.'));
                         }
                     })
                     .catch(function(error) {
@@ -556,8 +556,8 @@
                         footerEl.classList.remove('hidden');
                         footerP.style.display = '';
                         var jobText = this.totalJobs === 1
-                            ? Craft.t('queue-manager', '1 job')
-                            : Craft.t('queue-manager', '{total} jobs', { total: this.totalJobs });
+                            ? Craft.t('custom-queue-manager', '1 job')
+                            : Craft.t('custom-queue-manager', '{total} jobs', { total: this.totalJobs });
                         footerP.textContent = jobText;
                     }
                 },

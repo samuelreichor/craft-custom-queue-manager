@@ -1,12 +1,12 @@
 <?php
 
-namespace samuelreichor\queueManager\utilities;
+namespace samuelreichor\customQueueManager\utilities;
 
 use Craft;
 use craft\base\Utility;
 use craft\queue\Queue;
-use samuelreichor\queueManager\QueueManager;
-use samuelreichor\queueManager\web\assets\queuemonitor\QueueMonitorAsset;
+use samuelreichor\customQueueManager\CustomQueueManager;
+use samuelreichor\customQueueManager\web\assets\queuemonitor\QueueMonitorAsset;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -22,7 +22,7 @@ class QueueMonitorUtility extends Utility
 
     public static function displayName(): string
     {
-        return Craft::t('queue-manager', 'Custom Queues');
+        return Craft::t('custom-queue-manager', 'Custom Queues');
     }
 
     public static function icon(): ?string
@@ -33,7 +33,7 @@ class QueueMonitorUtility extends Utility
     public static function badgeCount(): int
     {
         $totalFailed = 0;
-        $queues = QueueManager::getInstance()->queueDiscovery->getRegisteredQueues();
+        $queues = CustomQueueManager::getInstance()->queueDiscovery->getRegisteredQueues();
 
         foreach ($queues as $queueData) {
             /** @var Queue $queue */
@@ -56,7 +56,7 @@ class QueueMonitorUtility extends Utility
         $view = Craft::$app->getView();
         $view->registerAssetBundle(QueueMonitorAsset::class);
 
-        $discoveryService = QueueManager::getInstance()->queueDiscovery;
+        $discoveryService = CustomQueueManager::getInstance()->queueDiscovery;
         $queues = $discoveryService->getRegisteredQueues();
 
         // Prepare queue data for the template
@@ -69,9 +69,9 @@ class QueueMonitorUtility extends Utility
             ];
         }
 
-        return $view->renderTemplate('queue-manager/_components/utilities/QueueMonitor/content.twig', [
+        return $view->renderTemplate('custom-queue-manager/_components/utilities/QueueMonitor/content.twig', [
             'queues' => $queueData,
-            'settings' => QueueManager::getInstance()->getSettings(),
+            'settings' => CustomQueueManager::getInstance()->getSettings(),
         ]);
     }
 
@@ -84,7 +84,7 @@ class QueueMonitorUtility extends Utility
     public static function toolbarHtml(): string
     {
         return Craft::$app->getView()->renderTemplate(
-            'queue-manager/_components/utilities/QueueMonitor/toolbar.twig'
+            'custom-queue-manager/_components/utilities/QueueMonitor/toolbar.twig'
         );
     }
 
@@ -97,7 +97,7 @@ class QueueMonitorUtility extends Utility
     public static function footerHtml(): string
     {
         return Craft::$app->getView()->renderTemplate(
-            'queue-manager/_components/utilities/QueueMonitor/footer.twig'
+            'custom-queue-manager/_components/utilities/QueueMonitor/footer.twig'
         );
     }
 }

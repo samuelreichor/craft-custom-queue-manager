@@ -1,11 +1,11 @@
 <?php
 
-namespace samuelreichor\queueManager\models;
+namespace samuelreichor\customQueueManager\models;
 
 use craft\base\Model;
 
 /**
- * Queue Manager settings
+ * Custom Queue Manager settings
  */
 class Settings extends Model
 {
