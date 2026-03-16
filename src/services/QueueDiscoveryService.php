@@ -24,6 +24,11 @@ class QueueDiscoveryService extends Component
                 continue;
             }
 
+            // Pre-check: only attempt to load components that look like a Queue
+            if (!$this->isQueueDefinition($definition)) {
+                continue;
+            }
+
             try {
                 $component = Craft::$app->get($id);
                 if ($component instanceof Queue) {
@@ -62,6 +67,30 @@ class QueueDiscoveryService extends Component
             Craft::warning("Queue discovery: Could not load '{$id}': " . $e->getMessage(), __METHOD__);
             return null;
         }
+    }
+
+    /**
+     * Check if a component definition looks like a Queue class before instantiating it.
+     */
+    private function isQueueDefinition(mixed $definition): bool
+    {
+        if ($definition instanceof Queue) {
+            return true;
+        }
+
+        // Extract the class name from the definition
+        $class = null;
+        if (is_string($definition)) {
+            $class = $definition;
+        } elseif (is_array($definition) && isset($definition['class'])) {
+            $class = $definition['class'];
+        }
+
+        if ($class === null) {
+            return false;
+        }
+
+        return $class === Queue::class || is_subclass_of($class, Queue::class);
     }
 
     /**
